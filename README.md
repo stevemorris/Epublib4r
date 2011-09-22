@@ -1,47 +1,59 @@
-# Integration Exercise: Java Library Wrapper
+# Epublib-Ruby
 
-_written by Shane Emmons for Mendicant University core skills session #9_
+Epublib-Ruby is a Ruby wrapper for the [Epublib Java EPUB library](https://github.com/psiegman/epublib). This library enables you to read and write EPUB files. The wrapper is a Ruby gem and provides a Ruby interface to core features of the Epublib Java library.
 
-The world is full of Java. Chances are pretty good if you walk into a
-corporate IT department you'll find Java. So, what do we as Ruby developers do
-when forced to work with Java? We turn to JRuby and it's Java integration. Your
-assignment, should you choose to accept it, is to use JRuby to wrap an existing
-Java library into a new Ruby gem. You can choose any Java library you like.
-However, if there already existing a functional and active gem, you should look
-at wrapping a different library unless you plan on taking a different route.
-Either way, please have Greg or Shane approve your chosen library before
-starting work in earnest. 
+I developed this gem as part of [Ruby Mendicant University's](http://university.rubymendicant.com/) September 2011 session.
 
-Oh, and one more thing. We don't just want this to be
-a straight API copy of the existing library. Abstract things away from the
-programmer so that working with your gem is easier than working directly with
-the library via JRuby. The code below is an example of what *not* to do.
+## Requirements
 
-```ruby
-session   = CrystalEnterprise.getSessionManager.logon(user, password, cms, authtype)
-infostore = session.getService('', 'InfoStore')
-```
+JRuby running in 1.9 mode.
 
-With a little bit of effort, this interaction could be made to feel a lot more
-natural to a native Rubyist. The code shown below is much closer to what you
-should be aiming for.
+## Examples
 
-```ruby
-session   = Enterprise.connect(user: "shane", password: "password")
-infostore = session.infostore
-```
-For a more complete example, see Shane's [bosdk wrapper](https://github.com/semmons99/bosdk).
+The project includes two Ruby example programs translated from the Epublib project Java examples. These examples can be found in the *examples* folder, and the required book files are in the *examples/book* folder. 
+The following example illustrates the API calls for creating an EPUB file:
 
-## Exercise Summary
+    require 'epublib-ruby'
 
-- You should create a gem using JRuby that wraps an existing Java library.
-- Your gem should work with a Java library that doesn't already have
-  a good wrapper.
-- You should make the API for your library look and feel like Ruby, not Java.
+    # Create new ebook
+    ebook = Epublib::Ebook.new
 
-## Submission Guidelines
+    # Set the title
+    ebook.add_title('Epublib Test Book')
 
-If you plan to work on this exercise, you should fork this repository 
-and push code early and often during the course. The course 
-guidelines PDF explains the submission process in detail, but please 
-contact an instructor if you have any questions.
+    # Add an author
+    ebook.add_author('Joe', 'Tester')
+
+    # Set cover page
+    ebook.set_cover_page('book/cover.html')
+
+    # Set cover image
+    ebook.set_cover_image('book/cover.png')
+
+    # Add Chapter 1
+    ebook.add_section('Introduction', 'book/chapter1.html')
+
+    # Add CSS file
+    ebook.add_resource('book/book1.css')
+
+    # Add Chapter 2
+    chapter2 = ebook.add_section('Second Chapter', 'book/chapter2.html')
+
+    # Add image used by Chapter 2
+    ebook.add_resource('book/flowers.jpg')
+
+    # Add Chapter2, Section 1
+    ebook.add_subsection(chapter2, 'Chapter 2, section 1', 'book/chapter2_1.html')
+
+    # Add Chapter 3
+    ebook.add_section('Conclusion', 'book/chapter3.html')
+
+    # Write the ebook as EPUB
+    Epublib::Writer.write_file(ebook, 'book/test_book.epub')
+
+
+## Tests
+
+To run the tests, run the rake command:
+
+    $ rake

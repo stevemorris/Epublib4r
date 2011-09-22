@@ -1,11 +1,15 @@
-module EPubLib
-  class Writer
-    def initialize
-      @writer = EpubWriter.new
+module Epublib
+  module Writer
+    extend self
+
+    def write_file(ebook, file_path)
+      EpubWriter.new.write(ebook.book, Utils.output_file(file_path))
     end
 
-    def write(book, file_path)
-      @writer.write(book, FileOutputStream.new(file_path))
+    def write_buffer(ebook)
+      buffer = Utils.output_array
+      EpubWriter.new.write(ebook.book, buffer)
+      buffer.toByteArray()
     end
   end
 end
