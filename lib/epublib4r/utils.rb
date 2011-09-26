@@ -1,4 +1,4 @@
-module Epublib
+module Epublib4r
   module Utils
     extend self
 

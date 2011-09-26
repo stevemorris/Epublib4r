@@ -12,10 +12,7 @@ java_import 'nl.siegmann.epublib.domain.Resource'
 java_import 'nl.siegmann.epublib.epub.EpubReader'
 java_import 'nl.siegmann.epublib.epub.EpubWriter'
 
-require_relative 'epublib-ruby/ebook'
-require_relative 'epublib-ruby/reader'
-require_relative 'epublib-ruby/utils'
-require_relative 'epublib-ruby/writer'
-
-module Epublib
-end
+require_relative 'epublib4r/ebook'
+require_relative 'epublib4r/reader'
+require_relative 'epublib4r/utils'
+require_relative 'epublib4r/writer'

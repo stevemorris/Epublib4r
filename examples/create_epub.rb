@@ -1,10 +1,10 @@
-require 'epublib-ruby'
+require 'epublib4r'
 
 # Create new ebook
-ebook = Epublib::Ebook.new
+ebook = Epublib4r::Ebook.new
 
 # Set the title
-ebook.add_title('Epublib Test Book')
+ebook.add_title('Epublib4r Test Book')
 
 # Add an author
 ebook.add_author('Joe', 'Tester')
@@ -34,4 +34,4 @@ ebook.add_subsection(chapter2, 'Chapter 2, section 1', 'book/chapter2_1.html')
 ebook.add_section('Conclusion', 'book/chapter3.html')
 
 # Write the ebook as EPUB
-Epublib::Writer.write_file(ebook, 'book/test_book.epub')
+Epublib4r::Writer.write_file(ebook, 'book/test_book.epub')

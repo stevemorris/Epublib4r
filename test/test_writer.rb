@@ -1,12 +1,12 @@
 require 'test/unit'
-require_relative '../lib/epublib-ruby'
+require_relative '../lib/epublib4r'
 
 class EpubWriterTest < Test::Unit::TestCase
   def setup
     @path  = File.dirname(__FILE__) + '/../examples/book/'
-    @ebook = Epublib::Ebook.new
+    @ebook = Epublib4r::Ebook.new
 
-    @ebook.add_title('Epublib test book 1')
+    @ebook.add_title('Epublib4r Test Book')
     @ebook.add_title('test2')
 
     @ebook.add_identifier(Identifier::Scheme::ISBN, '987654321')
@@ -21,12 +21,12 @@ class EpubWriterTest < Test::Unit::TestCase
     @ebook.add_section('Chapter 3', @path + 'chapter3.html')
   end
 
-  def test_ebook1
-    ebook_data = Epublib::Writer.write_buffer(@ebook)
+  def test_ebook_generation
+    ebook_data = Epublib4r::Writer.write_buffer(@ebook)
     assert_not_nil(ebook_data)
     assert(ebook_data.length > 0)
 
-    read_ebook = Epublib::Ebook.new(Epublib::Reader.read_buffer(ebook_data))
+    read_ebook = Epublib4r::Ebook.new(Epublib4r::Reader.read_buffer(ebook_data))
 
     assert_equal(@ebook.get_titles, read_ebook.get_titles)
     assert_equal(Identifier::Scheme::ISBN, read_ebook.get_scheme)

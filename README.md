@@ -1,6 +1,6 @@
-# Epublib-Ruby
+# Epublib4r
 
-Epublib-Ruby is a Ruby wrapper for the [Epublib Java EPUB library](https://github.com/psiegman/epublib). This library enables you to read and write EPUB files. The wrapper is a Ruby gem and provides a Ruby interface to core features of the Epublib Java library.
+Epublib4r is a Ruby wrapper for the [Epublib Java EPUB library](https://github.com/psiegman/epublib). This library enables you to read and write EPUB files. The wrapper is a Ruby gem and provides a Ruby interface to core features of the Epublib Java library.
 
 I developed this gem as part of [Ruby Mendicant University's](http://university.rubymendicant.com/) September 2011 session.
 
@@ -13,10 +13,10 @@ JRuby running in 1.9 mode.
 The project includes two Ruby example programs translated from the Epublib project Java examples. These examples can be found in the *examples* folder, and the required book files are in the *examples/book* folder. 
 The following example illustrates the API calls for creating an EPUB file:
 
-    require 'epublib-ruby'
+    require 'epublib4r'
 
     # Create new ebook
-    ebook = Epublib::Ebook.new
+    ebook = Epublib4r::Ebook.new
 
     # Set the title
     ebook.add_title('Epublib Test Book')
@@ -49,7 +49,7 @@ The following example illustrates the API calls for creating an EPUB file:
     ebook.add_section('Conclusion', 'book/chapter3.html')
 
     # Write the ebook as EPUB
-    Epublib::Writer.write_file(ebook, 'book/test_book.epub')
+    Epublib4r::Writer.write_file(ebook, 'book/test_book.epub')
 
 
 ## Tests

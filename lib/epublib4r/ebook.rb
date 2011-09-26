@@ -1,4 +1,4 @@
-module Epublib
+module Epublib4r
   class Ebook
     attr_reader :book
 
