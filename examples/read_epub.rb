@@ -4,5 +4,5 @@ require 'epublib4r'
 ebook = Epublib4r::Reader.read_file('book/test_book.epub')
 
 # Print the first title
-titles = ebook.get_titles
+titles = ebook.titles
 puts "Book Title: #{titles.first}"
