@@ -1,10 +1,17 @@
 module Epublib4r
   class Ebook
-    attr_reader :book
+    def initialize(path = nil)
+      @book = if path.nil?
+        Book.new
+      else
+        EpubReader.new.readEpub(FileInputStream.new(path))
+      end
 
-    def initialize(book = nil)
-      @book     = book || Book.new
       @sections = {}
+    end
+
+    def write(path)
+      EpubWriter.new.write(@book, FileOutputStream.new(File.expand_path(path)))
     end
 
     #
@@ -33,43 +40,53 @@ module Epublib4r
     # Cover Page and Image
     #
     def cover_page=(path)
-      @book.setCoverPage(Utils.input_resource(path))
+      @book.setCoverPage(resource(path))
     end
-
+    
     def cover_page
       @book.getCoverPage
     end
-
+    
     def cover_image=(path)
-      @book.setCoverImage(Utils.input_resource(path))
+      @book.setCoverImage(resource(path))
     end
-
+    
     def cover_image
       @book.getCoverImage
     end
 
     #
-    # Sections and Table of Contents
+    # Style Sheet
+    #
+    def style_sheet=(path)
+      @book.addResource(resource(path))
+    end
+
+    #
+    # Section
     #
     def section=(options)
       title = options[:title]
-      file  = options[:file]
-      @sections[title] = if (parent = options[:parent]).nil?
-        @book.addSection(title, Utils.input_resource(file))
+      path  = options[:path]
+      @sections[path] = if (parent = options[:parent]).nil?
+        @book.addSection(title, resource(path))
       else
-        @book.addSection(@sections[parent], title, Utils.input_resource(file))
+        @book.addSection(@sections[parent], title, resource(path))
       end
     end
 
-    def table_of_contents
-      @book.getTableOfContents
+    #
+    # Image
+    #
+    def image=(path)
+      @book.addResource(resource(path))
     end
 
     #
-    # Resources
+    # Table of Contents
     #
-    def resource=(file)
-      @book.addResource(Utils.input_resource(file))
+    def table_of_contents
+      @book.getTableOfContents
     end
 
     #
@@ -105,6 +122,26 @@ module Epublib4r
 
     def spine
       @book.getSpine
+    end
+
+    #
+    # Buffer (used by unit tests)
+    #
+    def buffer=(other_buffer)
+      @book = EpubReader.new.readEpub(ByteArrayInputStream.new(other_buffer))
+    end
+
+    def buffer
+      stream = ByteArrayOutputStream.new
+      EpubWriter.new.write(@book, stream)
+      stream.toByteArray()
+    end
+
+    private
+
+    def resource(path)
+      full_path = File.expand_path(path)
+      Resource.new(FileInputStream.new(full_path), File.basename(path))
     end
   end
 end

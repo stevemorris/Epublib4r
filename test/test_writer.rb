@@ -1,33 +1,35 @@
 require 'test/unit'
 require_relative '../lib/epublib4r'
 
-class EpubWriterTest < Test::Unit::TestCase
+class EPUBWriterTest < Test::Unit::TestCase
   PATH = File.dirname(__FILE__) + '/../examples/book/'
 
   def setup
     @ebook = Epublib4r::Ebook.new
 
     @ebook.title = 'Epublib4r Test Book'
-    @ebook.title = 'Another Title'
+    @ebook.title = 'Subtitle'
 
     @ebook.identifier = { Identifier::Scheme::ISBN => '987654321' }
     @ebook.author = 'Joe', 'Tester'
     @ebook.cover_page = PATH + 'cover.html'
     @ebook.cover_image = PATH + 'cover.png'
-    @ebook.section = { title: 'Chapter 1', file: PATH + 'chapter1.html' }
-    @ebook.resource = PATH + 'book1.css'
-    @ebook.section = { title: 'Second chapter', file: PATH + 'chapter2.html' }
-    @ebook.resource = PATH + 'flowers.jpg'
-    @ebook.section = { title: 'Chapter 2 section 1', file: PATH + 'chapter2_1.html', parent: 'Second chapter' }
-    @ebook.section = { title: 'Chapter 3', file: PATH + 'chapter3.html' }
+    @ebook.section = { title: 'Chapter 1', path: PATH + 'chapter1.html' }
+    @ebook.style_sheet = PATH + 'book1.css'
+    chapter2 = PATH + 'chapter2.html'
+    @ebook.section = { title: 'Second chapter', path: chapter2 }
+    @ebook.image = PATH + 'flowers.jpg'
+    @ebook.section = { title: 'Chapter 2 section 1', path: PATH + 'chapter2_1.html', parent: chapter2 }
+    @ebook.section = { title: 'Chapter 3', path: PATH + 'chapter3.html' }
   end
 
   def test_ebook_generation
-    ebook_data = Epublib4r::Writer.write_buffer(@ebook)
+    ebook_data = @ebook.buffer
     assert_not_nil(ebook_data)
     assert(ebook_data.length > 0)
 
-    read_ebook = Epublib4r::Ebook.new(Epublib4r::Reader.read_buffer(ebook_data))
+    read_ebook = Epublib4r::Ebook.new
+    read_ebook.buffer = ebook_data
 
     assert_equal(@ebook.titles, read_ebook.titles)
     assert_equal(Identifier::Scheme::ISBN, read_ebook.scheme)
