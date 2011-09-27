@@ -13,4 +13,4 @@ java_import 'nl.siegmann.epublib.epub.EpubReader'
 java_import 'nl.siegmann.epublib.epub.EpubWriter'
 
 require_relative 'epublib4r/ebook'
-require_relative 'epublib4r/EPUB'
+require_relative 'epublib4r/epub'
